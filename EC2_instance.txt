@@ -1,0 +1,66 @@
+https://dzone.com/articles/top-20-git-commands-with-examples
+
+Working with git pull:
+git pull origin master
+
+Working with git stash:
+
+git stash
+git stash show
+git stash apply
+
+Working with git log:
+git log
+Reverting to my previous commit:
+git log --oneline
+
+Working with git revert:
+git revert commitid
+git revert HEAD
+
+
+
+=================================================================
+
+https://us-east-2.console.aws.amazon.com/ec2/v2/home?region=us-east-2#LaunchInstanceWizard:
+
+EC2
+Lauch instance
+Step 1: Choose an Amazon Machine Image (AMI)
+---->
+Amazon Linux
+Free tier eligible
+Select
+64-bit (x86)
+Amazon Linux AMI 2018.03.0 (HVM), SSD Volume Type - ami-02f706d959cedf892 ->t2.micro  Free tier eligible
+
+
+
+sudo su -
+yum install docker
+service docker start
+service docker status
+docker pull nginx
+docker pull httpd
+
+docker run ngnix
+
+docker ps -a
+docker exec -it <cinainer id> /bin/sh
+
+
+
+
+
+
+
+
+
+
+
+
+pull image - ngninx
+now I want that image on differnt container
+
+
+
