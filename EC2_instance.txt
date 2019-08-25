@@ -35,6 +35,7 @@ Select
 Amazon Linux AMI 2018.03.0 (HVM), SSD Volume Type - ami-02f706d959cedf892 ->t2.micro  Free tier eligible
 
 
+login as - ec2-user
 
 sudo su -
 yum install docker
