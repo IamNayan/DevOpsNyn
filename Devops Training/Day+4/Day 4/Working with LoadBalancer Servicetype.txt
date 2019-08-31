@@ -1,0 +1,63 @@
+Create A deployment from following configuration.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx-ctr
+        image: nginx:1.15.4
+        ports:
+        - containerPort: 80
+
+Deploy above Deployment.
+
+Create configuration file in AWS ELB :
+ls/tmp/config/tmp/config
+
+export KUBECONFIG=/tmp/config
+
+kubectl deploy deploy.yaml
+
+Create following yaml for Load Balancer to create service to above Deployment -loadbalancer.yaml
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-lb
+  labels:
+    app: nginx
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+  selector:
+    app: nginx
+
+kubectl apply -f loadbalancer.yaml
+
+kubectl get svc loadbalancer.yaml
+NAME       TYPE           CLUSTER-IP       EXTERNAL-IP                                                               PORT(S)        AGE
+
+nginx-lb   LoadBalancer   100.65.24.180    a062d9f78c47511e881d002820176578-1454043559.us-west-2.elb.amazonaws.com   80:31765/TCP   48s
+
+
+
+
+
+
+
+

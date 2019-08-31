@@ -1,0 +1,55 @@
+Each Pod is assigned a unique IP address. Every container in a Pod shares the network namespace, including the IP address and network ports. Containers inside a Pod can communicate with one another using localhost. If pod get restarted same IP cant be retained, it will get new IP.
+
+Create A deployment from following configuration.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx-ctr
+        image: nginx:1.15.4
+        ports:
+        - containerPort: 80
+
+kubectl apply -f deply.yaml
+
+kubectl get pods (Pod details)
+
+kubectl get pod -o wide(Detailed information about Pods)
+
+Lets access that PodIP from another container.
+
+kubectl run demo --it --rm --image=python /bin/sh
+
+Lets access that PodIP from another container.
+If you don't see a command prompt, try pressing enter.
+# curl 100.116.17.184
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<body>
+.
+
+
+

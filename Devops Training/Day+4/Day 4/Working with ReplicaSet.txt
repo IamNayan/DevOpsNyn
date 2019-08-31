@@ -1,0 +1,47 @@
+		             Create a Replica Set
+
+1.Create a directory and login to the directory
+
+mkdir config
+cd config
+
+2. Create Replica Set
+vim replicaset.yml
+
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx-app
+        image: nginx
+
+3.Deploy the replicaset
+        kubectl apply -f replicaset.yaml
+
+4.Get the list ore replicaset
+kubctl get replicaset
+ NAME      DESIRED   CURRENT   READY     AGE
+nginx     3         3         3         20s
+
+5.kubectl get pods
+6.Delete one of the Pods
+Kubectl delete pod nginx*
+
+7.kubectl get pods (you would see that it would have created a new pod automatically)
+
+8 kubectl delete replicaset nginx
+
+9.See the o/p of kubectl get pods ..
+
+It would become zero

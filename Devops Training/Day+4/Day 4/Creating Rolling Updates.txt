@@ -1,0 +1,107 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+  labels:
+    app: my-app
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+        version: v1.0.0
+    spec:
+      containers:
+      - name: my-app
+        image: nginx:1.9.1
+        ports:
+        - name: http
+          containerPort: 80
+        env:
+        - name: VERSION
+          value: v1.0.0
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          periodSeconds: 5
+
+
+$ kubectl apply -f configs/ramped/appv1.yaml
+kubectl get pods
+
+
+New yaml file
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+  labels:
+    app: my-app
+spec:
+  replicas: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+        version: v2.0.0
+    spec:
+      containers:
+      - name: my-app
+        image: teamcloudyuga/app
+        ports:
+        - name: http
+          containerPort: 80
+        env:
+        - name: VERSION
+          value: v2.0.0
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          # Intial delay is set to a high value to have a better
+          # visibility of the ramped deployment
+          initialDelaySeconds: 15
+          periodSeconds: 5
+
+
+kubectl apply -f my-app
+
+New ereplicat set would get created
+
+Pods in old would get deleted
+
+rs-replicaset
+kubectl get rs -w
+
+kubectl get rs 
+
+kubectl get pods
+
+kubectl describe podname*
+

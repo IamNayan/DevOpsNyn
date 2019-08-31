@@ -1,0 +1,81 @@
+Create A deployment from following configuration deploy.yaml
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx-ctr
+        image: nginx:1.15.4
+        ports:
+        - containerPort: 80
+
+Deploy the deployment
+
+kubectl appy -f deploy.yaml
+
+
+Create a clusterIP service for above created deployment - clusterip-svc.yaml
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-svc
+  labels:
+    app: nginx
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+  selector:
+    app: nginx
+
+Deploy the service
+
+kubectl apply -f clusterip-svc.yaml
+
+List the services
+
+kubectl get svc
+
+NAME         CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+kubernetes   10.0.0.1     <none>        443/TCP   1h
+nginx-svc    10.0.0.134   <none>        80/TCP    8s
+
+
+Verify the DNS service via nslookup
+
+kubectl run test --rm --image=nginx:1.9.1 /bin/sh
+inside the container
+
+apt update
+apt-get install dnsutils
+nslookup nginx-svc
+
+Server:     10.0.0.10
+Address:    10.0.0.10#53
+
+Name:   nginx-svc.default.svc.cluster.local
+Address: 10.0.0.134
+
+Within the same namespace service can be accessed by the other service/pods with its DNS name.
+
+Delete the deployment and service:
+kubectl delete svc nginx-svc
+kubectl delete deploy deploymentname
+

@@ -1,0 +1,61 @@
+TCP Probe
+
+Creating a nginx pod with tcp liveness probe.
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: liveness-tcp
+  labels:
+     app: livess-pro
+spec:
+  containers:
+  - name: echo-server
+    image: hashicorp/http-echo:0.2.3
+    args: ["-listen", ":8080", "-text", "example for tcp liveness probe"]
+    ports:
+      - containerPort: 8080
+    livenessProbe:
+      tcpSocket:
+        port: 8080
+      initialDelaySeconds: 10
+      periodSeconds: 5
+      timeoutSeconds: 1
+
+kubectl apply -f liveness-tcp-pod.yaml
+
+kubectl get pods liveness-tcp
+
+Demo of failing :
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: liveness-fail-tcp
+  labels:
+     app: liveness-probe-example
+spec:
+  containers:
+  - name: echo-server
+    image: hashicorp/http-echo:0.2.3
+    args: ["-listen", ":8080", "-text", "fail example for tcp liveness probe"]
+    ports:
+      - containerPort: 8080
+    livenessProbe:
+      tcpSocket:
+        port: 8090
+      initialDelaySeconds: 10   #Second after which probe will start checking
+      periodSeconds: 5  # How often to perform the probe
+      timeoutSeconds: 1 # timeout for probe.
+      failureThreshold: 2  #Number of time, before pod will be restarted
+
+kubectl apply -f yaml file name
+
+kubectl get pods liveness*
+
+Observe the restarts and you would observe it is failing
+
+kubectl get pods liveness-fail-tcp -w
+
+
+
