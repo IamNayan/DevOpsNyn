@@ -139,6 +139,8 @@ docker run -it --network networknayan --name  nginx5 nginx /bin/sh
 c4b82fbe826d49089f92c6a0019bccce
 admin admin nayan
 
+http://3.14.152.94:8080/
+
 jenkins url -http://18.219.238.254:8080/
 w
 jenkins cli -image url -  
